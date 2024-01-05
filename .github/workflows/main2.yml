@@ -36,4 +36,5 @@ jobs:
               context: .
               file: ./Dockerfile
               push: true
-              tags: ${{ secrets.DOCKERHUB_USERNAME }}/ci-js-docker:latest:${{ GITHUB_REF_SLUG }}
+              tags: ${{ secrets.DOCKERHUB_USERNAME }}/ci-js-docker:latest:${{ github.ref_name }}
+
