@@ -8,12 +8,10 @@ on: # specify the build to trigger the automated ci/cd
 jobs:
     build:
         name: Build Docker image
-        runs-on: ubuntu-latest # specify the build machine
-        env:
-            GITHUB_BRANCH: ${{ github.ref }}
-
+        runs-on: ${{ matrix.os }} # specify the build machine
         strategy:
           matrix:
+            os: [ubuntu-latest, windows-latest]
             node-version: ['19.x', '20.x']
             
         steps:
