@@ -34,4 +34,4 @@ jobs:
               context: .
               file: ./Dockerfile
               push: true
-              tags: niirok/ci-js-docker:latest
+              tags: ${{ secrets.DOCKERHUB_USERNAME }}/ci-js-docker:latest
