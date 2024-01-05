@@ -9,7 +9,6 @@ jobs:
     build:
         name: Build Docker image
         runs-on: ubuntu-latest # specify the build machine
-        environment: Prod
         steps:
             - # checkout to the repository on the build machine
                 name: Checkout
