@@ -17,7 +17,7 @@ jobs:
                 name: Login to Docker Hub
                 uses: docker/login-action@v2
                 with:
-                  username: $DOCKERHUB_USERNAME
+                  username: niirok
                   password: $DOCKERHUB_TOKEN
             - # create a build kit builder instance
                 name: Set up Docker Buildx
