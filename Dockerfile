@@ -1,4 +1,4 @@
-FROM node:19
+FROM node:alpine
 
 # Define the working directory, where the application will reside inside the Docker
 WORKDIR /usr/src/app
