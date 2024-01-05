@@ -9,8 +9,10 @@ jobs:
     build:
         name: Build Docker image
         runs-on: ubuntu-latest # specify the build machine
+        env:
+            GITHUB_BRANCH: ${{ github.ref }}
         steps:
-
+              
         - # checkout to the repository on the build machine
             name: Checkout
             uses: actions/checkout@v3
@@ -34,4 +36,4 @@ jobs:
               context: .
               file: ./Dockerfile
               push: true
-              tags: ${{ secrets.DOCKERHUB_USERNAME }}/ci-js-docker:latest:${{ GITHUB_REF##* }}
+              tags: ${{ secrets.DOCKERHUB_USERNAME }}/ci-js-docker:latest:${{ GITHUB_BRANCH }}
