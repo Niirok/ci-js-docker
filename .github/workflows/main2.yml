@@ -5,10 +5,7 @@ on: # specify the build to trigger the automated ci/cd
       - "main"
       - "develop"
 jobs:
-  job2:
-    needs: job1
-
-    build:
+  build:
     name: Build Docker image
     runs-on: ${{ matrix.os }} # specify the build machine
 
