@@ -11,7 +11,7 @@ jobs:
         runs-on: ${{ matrix.os }} # specify the build machine
         strategy:
           matrix:
-            os: [ubuntu-latest, windows-latest]
+            os: [ubuntu-latest, ubuntu-20.04]
             node-version: ['19.x', '20.x']
             
         steps:
@@ -39,5 +39,5 @@ jobs:
               context: .
               file: ./Dockerfile
               push: true
-              tags: ${{ secrets.DOCKERHUB_USERNAME }}/ci-js-docker:latest-${{ github.ref_name }}
+              tags: ${{ secrets.DOCKERHUB_USERNAME }}/ci-js-docker:latest-${{ github.ref_name }}-${{ matrix.os }}-nodev${{ matrix.node-version }}
 
