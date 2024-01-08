@@ -7,9 +7,9 @@ on: # specify the build to trigger the automated ci/cd
 jobs:
     job1:
         build:
-            runs-on: ubuntu-latest
+        runs-on: ubuntu-latest
 
-            steps:
+        steps:
             - name: Checkout repository
             uses: actions/checkout@v3
 
@@ -28,8 +28,8 @@ jobs:
         needs: job1
     
         build:
-            name: Build Docker image
-            runs-on: ${{ matrix.os }} # specify the build machine
+        name: Build Docker image
+        runs-on: ${{ matrix.os }} # specify the build machine
         
         strategy:
             matrix:
