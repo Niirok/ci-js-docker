@@ -1,63 +1,44 @@
 name: tuto-ci-docker
 on: # specify the build to trigger the automated ci/cd
-    push:
-        branches:
-            - "main"
-            - "develop"
+  push:
+    branches:
+      - "main"
+      - "develop"
 jobs:
-    job1:
-        build:
-        runs-on: ubuntu-latest
+  job2:
+    needs: job1
 
-        steps:
-            - name: Checkout repository
-            uses: actions/checkout@v3
+    build:
+    name: Build Docker image
+    runs-on: ${{ matrix.os }} # specify the build machine
 
-            - name: Set up Node.js 20
-            uses: actions/setup-node@v1
-            with:
-                node-version: 20
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ubuntu-20.04]
+        node-version: ["19.x", "20.x"]
 
-            - name: Install dependencies
-            run: npm install
+    steps:
+      - # checkout to the repository on the build machine
+        name: Checkout
+        uses: actions/checkout@v3
 
-            - name: Run the tests
-            run: npm test --coverage
-    
-    job2:
-        needs: job1
-    
-        build:
-        name: Build Docker image
-        runs-on: ${{ matrix.os }} # specify the build machine
-        
-        strategy:
-            matrix:
-                os: [ubuntu-latest, ubuntu-20.04]
-                node-version: ['19.x', '20.x']
+      - # login to Docker Hub using the secrets provided
+        name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-        steps:
-        - # checkout to the repository on the build machine
-            name: Checkout
-            uses: actions/checkout@v3
+      - # create a build kit builder instance
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-        - # login to Docker Hub using the secrets provided
-            name: Login to Docker Hub
-            uses: docker/login-action@v3
-            with:
-                username: ${{ secrets.DOCKERHUB_USERNAME }}
-                password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-        - # create a build kit builder instance
-            name: Set up Docker Buildx
-            uses: docker/setup-buildx-action@v2
-
-        - # build the container image and push it to Docker Hub with \
-          # the name ci-js-docker.
-            name: Build and push
-            uses: docker/build-push-action@v4
-            with:
-              context: .
-              file: ./Dockerfile
-              push: true
-              tags: ${{ secrets.DOCKERHUB_USERNAME }}/ci-js-docker:latest-${{ github.ref_name }}-${{ matrix.os }}-nodev${{ matrix.node-version }}
+      - # build the container image and push it to Docker Hub with \
+        # the name ci-js-docker.
+        name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/ci-js-docker:latest-${{ github.ref_name }}-${{ matrix.os }}-nodev${{ matrix.node-version }}
